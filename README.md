@@ -1,6 +1,6 @@
 # Wails Vue Tailwind TypeScript
 
-A Wails v3 template for desktop apps with a Go backend, a Vue 3 frontend, and editable shadcn-vue components. Develop in Docker or with a native toolchain, then ship an executable with the frontend embedded.
+A Wails v3 template for desktop apps with a Go backend, a Vue 3 frontend, and editable shadcn-vue components. Develop in Docker or with a native toolchain, then ship an executable with the frontend embedded.[^ai-development]
 
 [Install the app](#install-the-app) · [Quick start for developers](#quick-start-for-developers) · [Build and release](#build-and-release) · [Project layout](#project-layout)
 
@@ -200,3 +200,5 @@ Use the [contribution guide](CONTRIBUTING.md) to test a change in a fresh genera
 README structure inspired by [Wails Template Vue](https://github.com/misitebao/wails-template-vue).
 
 [MIT license](LICENSE) · [Code of conduct](CODE_OF_CONDUCT.md) · [Security policy](SECURITY.md)
+
+[^ai-development]: Codex and OpenCode were used during development.
