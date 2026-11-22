@@ -42,31 +42,39 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential pkg-config libgtk-4-dev libwebkitgtk-6.0-dev
       - name: Install Wails
+        shell: pwsh
         run: |
-          go install "github.com/wailsapp/wails/v3/cmd/wails3@$WAILS_VERSION"
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+          $env:GOBIN = Join-Path $env:RUNNER_TEMP 'wails-bin'
+          go install "github.com/wailsapp/wails/v3/cmd/wails3@$env:WAILS_VERSION"
+          $env:GOBIN >> $env:GITHUB_PATH
       - name: Validate the official template schema
         if: runner.os == 'Linux' && hashFiles('template.yaml') != ''
         run: |
           curl -fsSL "https://raw.githubusercontent.com/wailsapp/wails/$WAILS_VERSION/docs/mpress/static/schemas/template.v3.json" -o "$RUNNER_TEMP/template.v3.json"
           pipx run --spec check-jsonschema==0.35.0 check-jsonschema --schemafile "$RUNNER_TEMP/template.v3.json" "$GITHUB_WORKSPACE/template.yaml"
       - name: Prepare app
+        shell: pwsh
         run: |
-          if [[ -f template.yaml ]]; then
-            stage="$RUNNER_TEMP/wails-check"
-            mkdir -p "$stage/wails-vue-tailwind-ts"
-            git archive HEAD | tar -xf - -C "$stage/wails-vue-tailwind-ts"
-            cd "$stage"
-            wails3 init -n WailsVueStarter -t "$stage/wails-vue-tailwind-ts" -mod example.org/wails/starter -productname "Wails Vue Starter"
-            cd WailsVueStarter
-            test ! -e frontend/node_modules
-            test ! -e frontend/dist
-            test ! -e NEXTSTEPS.md
-          fi
-          echo "APP_DIR=$(pwd)" >> "$GITHUB_ENV"
+          $appDir = $PWD.Path
+          if (Test-Path -LiteralPath 'template.yaml' -PathType Leaf) {
+            $stage = Join-Path $env:RUNNER_TEMP 'wails-check'
+            $template = Join-Path $stage 'wails-vue-tailwind-ts'
+            $archive = Join-Path $stage 'template.zip'
+            New-Item -ItemType Directory -Path $stage -Force | Out-Null
+            git archive --format=zip "--output=$archive" HEAD
+            Expand-Archive -LiteralPath $archive -DestinationPath $template
+            wails3 init -d "$stage" -n WailsVueStarter -t "$template" -mod example.org/wails/starter -productname "Wails Vue Starter"
+            $appDir = Join-Path $stage 'WailsVueStarter'
+            foreach ($relativePath in 'frontend/node_modules', 'frontend/dist', 'NEXTSTEPS.md') {
+              if (Test-Path -LiteralPath (Join-Path $appDir $relativePath)) {
+                throw "Unexpected generated file or directory: $relativePath"
+              }
+            }
+          }
+          "APP_DIR=$appDir" >> $env:GITHUB_ENV
       - name: Frontend checks
+        working-directory: ${{ env.APP_DIR }}
         run: |
-          cd "$APP_DIR"
           wails3 generate bindings -ts
           pnpm --dir frontend install --frozen-lockfile
           pnpm --dir frontend format:check
@@ -75,16 +83,16 @@ jobs:
           pnpm --dir frontend test
           pnpm --dir frontend build
       - name: Go checks and native build
+        working-directory: ${{ env.APP_DIR }}
         run: |
-          cd "$APP_DIR"
           test -z "$(gofmt -l ./*.go)"
           go test ./...
           go vet ./...
           wails3 build
       - name: Create macOS disk image
         if: runner.os == 'macOS'
+        working-directory: ${{ env.APP_DIR }}
         run: |
-          cd "$APP_DIR"
           wails3 task darwin:package:dmg
       - uses: actions/upload-artifact@v7
         if: runner.os == 'macOS'
