@@ -1,0 +1,26 @@
+services:
+  dev:
+    image: wails-vue-toolchain
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        LOCAL_UID: ${LOCAL_UID:-1000}
+        LOCAL_GID: ${LOCAL_GID:-1000}
+    init: true
+    command: ['dbus-run-session', '--', 'xvfb-run', '-a', '-s', '-screen 0 1280x900x24', 'bash', 'docker/dev.sh']
+    environment:
+      WAILS_VITE_POLLING: '1'
+    ports:
+      - '127.0.0.1:${DESKTOP_PORT:-6080}:6080'
+    volumes:
+      - .:/workspace
+      - node_modules:/workspace/frontend/node_modules
+      - pnpm_store:/home/developer/.cache/pnpm
+      - go_modules:/home/developer/go/pkg/mod
+      - go_build:/home/developer/.cache/go-build
+volumes:
+  node_modules:
+  pnpm_store:
+  go_modules:
+  go_build:

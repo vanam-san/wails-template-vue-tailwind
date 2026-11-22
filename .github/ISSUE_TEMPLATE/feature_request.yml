@@ -1,0 +1,16 @@
+name: Feature request
+description: Suggest a change to the template or developer workflow
+title: "[Feature] "
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What are you trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: What change would help?
+    validations:
+      required: true

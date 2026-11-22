@@ -1,0 +1,6 @@
+import { Greet } from '../../bindings/{{.ModulePath}}/greetservice.js'
+
+/** Calls the generated binding for this project's Go module. */
+export async function greet(name: string): Promise<string> {
+  return await Greet(name)
+}

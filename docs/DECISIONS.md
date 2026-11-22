@@ -1,0 +1,8 @@
+# Decisions
+
+- **Vue and Vite.** A client-rendered Vue bundle runs in the Wails webview and can be embedded in Go. The app has no SSR or Node runtime dependency.
+- **Tailwind CSS v4.** The official Vite plugin builds styles from a single CSS-first token file. The starter uses system fonts to keep production assets local.
+- **Local shadcn-vue components.** The official CLI copies component source into the project. Reka UI provides accessible primitives and the app can customize them directly. The example uses the Lucide package specified in the brief. Upstream deprecates that package name in favor of `@lucide/vue`, which the current shadcn-vue CLI may add for new icon-bearing components.
+- **pnpm.** The package manifest pins the tool version and the lockfile records the complete dependency graph. The Wails-generated pnpm task honors `frozenLockfile` in the frontend workspace settings.
+- **Stable Wails.** The template targets v3.1.0. Use the matching CLI and runtime. Wails v3.1.0's generator emits a `typescript` key, but the release schema omits it and restricts additional properties. This template follows that schema and uses a `-ts` template path or URL for Wails' TypeScript binding selection. Other paths emit JavaScript bindings by default. The same typed app wrapper accepts both generator outputs, and `wails3 generate bindings -ts` explicitly selects TypeScript.
+- **Docker for local tools.** Compose uses a Linux webview in a virtual display. The host runs Docker and a browser and keeps editing the project directly. Production build commands generate platform artifacts outside the development image.

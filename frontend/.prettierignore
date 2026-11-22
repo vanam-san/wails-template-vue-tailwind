@@ -1,0 +1,4 @@
+bindings/
+dist/
+pnpm-lock.yaml
+**/*.tmpl
