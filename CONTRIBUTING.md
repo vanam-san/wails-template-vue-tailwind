@@ -1,6 +1,6 @@
 # Contributing
 
-Read [Development](docs/DEVELOPMENT.md) for the Docker and native toolchains. Create a branch from the default branch. Keep commits focused and use a short imperative summary that describes the change.
+Read [Development](docs/DEVELOPMENT.md) for the Docker and native toolchains. Create a branch from `master`. Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) with a short imperative subject, such as `fix(ci): prepare template archives on Windows` or `feat(ui): add a theme preference`. Use `!` or a `BREAKING CHANGE` footer when the change breaks compatibility. See the [template release guide](docs/BUILD_AND_RELEASE.md#template-releases) for version increments.
 
 Use `gofmt` for Go and the frontend Prettier configuration for Vue and TypeScript. Keep service validation in Go and call generated bindings through the frontend wrapper. Commit the lockfile with dependency changes.
 

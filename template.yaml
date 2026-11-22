@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/wailsapp/wails/v3.1.0/docs/mpress/static/schemas/template.v3.json
 name: Wails Vue Tailwind TypeScript
 shortname: vue-tailwind-ts
-author: <AUTHOR_OR_ORGANISATION>
+author: Manav Mehta
 description: Wails v3 with Vue 3, Vite, TypeScript, Tailwind CSS and shadcn-vue
 helpurl: https://github.com/vanam-san/wails-template-vue-tailwind
-version: v0.1.0
+version: v1.0.0
 wailsVersion: 3

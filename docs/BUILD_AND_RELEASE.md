@@ -1,5 +1,23 @@
 # Build and release
 
+## Template releases
+
+The first template release is `v1.0.0`. Choose the next version by taking the largest increment required by the changes since the last published release.
+
+| Change | Increment | Example after `v1.0.0` |
+| --- | --- | --- |
+| Backward-compatible fixes, such as `fix:` | Patch `+0.0.1` | `v1.0.1` |
+| Backward-compatible features, such as `feat:` | Minor `+0.1.0` | `v1.1.0` |
+| Breaking changes or an incompatible overhaul, marked with `!` or `BREAKING CHANGE` | Major, reset minor and patch | `v2.0.0` |
+
+1. Update `template.yaml` and move the relevant changelog entries from **Unreleased** into a dated version section. Commit those changes with a Conventional Commit such as `chore(release): prepare v1.0.1`.
+2. Verify the checks on `master`. Create an annotated `vMAJOR.MINOR.PATCH` tag for the verified commit and push the tag to `origin`.
+3. Publish a GitHub release for that tag using the matching changelog section. The tag and source archives version the template. Installer versions are set separately when generating or configuring an application.
+
+[Semantic Versioning](https://semver.org/) · [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+
+## Application releases
+
 Run build and release commands from the generated app root. Update the app name, company, reverse-DNS identifier, version, description, copyright, and icon before distribution. Pass `-product*` flags at initialization to fill the generated platform assets. Maintain the corresponding values in `build/config.yml` before running `wails3 task common:update:build-assets`. Wails v3.1.0 seeds that config with sample metadata even when initial platform assets use the supplied flags. Review changes after regeneration and replace `build/appicon.png` with your app icon.
 
 ## Docker installers

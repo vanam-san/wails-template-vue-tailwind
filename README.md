@@ -130,10 +130,10 @@ git ls-files -z --cached --others --exclude-standard | tar -cf - --null -T - | t
 
    The first run installs frontend dependencies and generates bindings. When the window opens, enter a name and select **Greet from Go**. Press Ctrl+C in the terminal to stop the session.
 
-**Using the GitHub template URL.** Once the template source is published, native-toolchain users can skip the snapshot and run the following from the parent directory where they want a new `WailsVueStarter` folder.
+**Using the GitHub template URL.** Native-toolchain users can skip the snapshot and use the `v1.0.0` release. Run the following from the parent directory where you want a new `WailsVueStarter` folder.
 
 ```sh
-wails3 init -n WailsVueStarter -t https://github.com/vanam-san/wails-template-vue-tailwind -mod example.org/wails/starter -productname "Wails Vue Starter"
+wails3 init -n WailsVueStarter -t https://github.com/vanam-san/wails-template-vue-tailwind@v1.0.0 -mod example.org/wails/starter -productname "Wails Vue Starter"
 cd WailsVueStarter
 wails3 dev
 ```
@@ -195,7 +195,7 @@ With Docker, use `docker compose run --rm dev` before a command to run it in the
 
 ## Contributing
 
-Use the [contribution guide](CONTRIBUTING.md) to test a change in a fresh generated project. The [changelog](CHANGELOG.md) tracks template changes. Fill in the author, copyright year, and private reporting contacts before publishing. Test initialization from the GitHub URL before tagging the release.
+Use the [contribution guide](CONTRIBUTING.md) to test a change in a fresh generated project. See the [changelog](CHANGELOG.md) and [template release guide](docs/BUILD_AND_RELEASE.md#template-releases) for the release history and versioning rules.
 
 README structure inspired by [Wails Template Vue](https://github.com/misitebao/wails-template-vue).
 
