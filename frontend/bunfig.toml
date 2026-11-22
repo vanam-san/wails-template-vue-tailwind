@@ -1,0 +1,3 @@
+[install]
+# Keep transitive dependencies outside Go's recursive package discovery.
+linker = "isolated"

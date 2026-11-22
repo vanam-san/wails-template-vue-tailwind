@@ -16,11 +16,11 @@ services:
     volumes:
       - .:/workspace
       - node_modules:/workspace/frontend/node_modules
-      - pnpm_store:/home/developer/.cache/pnpm
+      - bun_cache:/home/developer/.cache/bun
       - go_modules:/home/developer/go/pkg/mod
       - go_build:/home/developer/.cache/go-build
 volumes:
   node_modules:
-  pnpm_store:
+  bun_cache:
   go_modules:
   go_build:

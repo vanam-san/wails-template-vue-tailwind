@@ -2,7 +2,7 @@
   "name": "wails-vue-starter",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.25.0",
+  "packageManager": "bun@1.4.5",
   "engines": {
     "node": "^24.0.0 || ^26.0.0"
   },

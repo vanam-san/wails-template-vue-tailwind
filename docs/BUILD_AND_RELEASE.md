@@ -12,7 +12,7 @@ The first template release is `v1.0.0`. Choose the next version by taking the la
 
 1. Update `template.yaml` and move the relevant changelog entries from **Unreleased** into a dated version section. Commit those changes with a Conventional Commit such as `chore(release): prepare v1.0.1`.
 2. Verify the checks on `master`. Create an annotated `vMAJOR.MINOR.PATCH` tag for the verified commit and push the tag to `origin`.
-3. Publish a GitHub release for that tag using the matching changelog section. The tag and source archives version the template. Installer versions are set separately when generating or configuring an application.
+3. Wait for **Template checks and installers** to attach the starter app installers to a draft GitHub release for the tag. Review the assets, add the matching changelog section as release notes, and publish the draft. The tag and source archives version the template. Installer versions are set separately when generating or configuring an application.
 
 [Semantic Versioning](https://semver.org/) · [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
@@ -39,4 +39,4 @@ Run `wails3 build` to create a standalone executable in `bin/`. On Windows, inst
 
 Use a Mac for building, signing, and notarizing a macOS release. Sign the Windows app and installer with an Authenticode certificate for public distribution. Keep certificates, passwords, signing identities, and notarization credentials in a keychain or CI secrets. Never commit credentials. Test install, launch, and uninstall on the target OS before publishing installers. [Wails signing and distribution](https://wails.io/reference/cli/#code-signing--packaging)
 
-The GitHub Actions workflow uploads unsigned Windows NSIS, Debian, and macOS DMG artifacts. Download and test them before attaching signed releases to a GitHub release. Mobile and store distribution require their own configuration.
+The GitHub Actions workflow uploads a Windows x64 NSIS installer, a Debian 13 amd64 package, and a universal macOS DMG for Apple silicon and Intel as run artifacts. On a version tag push, the workflow also attaches these files to the matching draft GitHub release after the checks and builds pass. The automated builds use no distribution signing credentials. Mobile and store distribution require their own configuration.

@@ -12,7 +12,7 @@
 | `@/` resolves in one tool only | Keep `vite.config.ts`, `tsconfig.json`, `tsconfig.app.json`, and `components.json` aliases aligned. Restart the editor's TypeScript server. |
 | Tailwind styles are missing | Check the Vite plugin, the `@import "tailwindcss"` entry in `src/style.css`, and the stylesheet import in `src/main.ts`. Use complete class names so Tailwind can detect them. |
 | shadcn-vue cannot add a component | Run the pinned CLI from `frontend/`. Check `components.json`, aliases, registry access, and the local component export. Update the lockfile with dependency changes. |
-| `go test` reports a missing embedded path | Run `wails3 generate bindings -ts`, install frontend dependencies, then run `pnpm --dir frontend build` before the Go tests. |
+| `go test` reports a missing embedded path | Run `wails3 generate bindings -ts` from the app root, then run `bun install --frozen-lockfile` and `bun run build` from `frontend/` before the Go tests. |
 | Static assets disappear in production | Import assets through Vite or put them in `frontend/public/`. Rebuild with `wails3 build` so Go embeds the latest output. |
 | An installed Linux app opens a blank window | Check that GTK4 and WebKitGTK 6.0 are installed for your distro. Run the app from a terminal to inspect webview errors and test against the distro used for packaging. |
 

@@ -1,4 +1,4 @@
 bindings/
 dist/
-pnpm-lock.yaml
+bun.lock
 **/*.tmpl

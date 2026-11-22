@@ -8,7 +8,6 @@
 /frontend/dist/
 /frontend/bindings/
 /frontend/.vite/
-/frontend/.pnpm-store/
 /frontend/coverage/
 *.tsbuildinfo
 *.syso
