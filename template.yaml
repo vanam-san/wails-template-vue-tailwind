@@ -4,5 +4,5 @@ shortname: vue-tailwind-ts
 author: Manav Mehta
 description: Wails v3 with Vue 3, Vite, TypeScript, Tailwind CSS and shadcn-vue
 helpurl: https://github.com/vanam-san/wails-template-vue-tailwind
-version: v1.2.0
+version: v1.1.1
 wailsVersion: 3
