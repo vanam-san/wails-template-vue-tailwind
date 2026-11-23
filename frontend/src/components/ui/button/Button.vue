@@ -12,6 +12,7 @@ interface Props extends PrimitiveProps {
   class?: HTMLAttributes['class']
 }
 
+// Render a native button by default and allow Reka UI to delegate with as-child.
 const props = withDefaults(defineProps<Props>(), {
   as: 'button',
 })

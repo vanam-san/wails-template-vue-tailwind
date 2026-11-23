@@ -4,6 +4,13 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) an
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-23
+
+### Added
+
+- Explain the Wails service bridge, Vue state, UI wrappers, and build infrastructure with source comments.
+- Add a source map and a walkthrough of the greeting request to the architecture guide.
+
 ## [1.1.0] - 2026-11-22
 
 ### Added
@@ -28,6 +35,7 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) an
 
 - Prepare Git archives and pass app paths using native paths on Windows CI.
 
-[Unreleased]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.1.0...master
+[Unreleased]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.2.0...master
+[1.2.0]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/vanam-san/wails-template-vue-tailwind/releases/tag/v1.0.0

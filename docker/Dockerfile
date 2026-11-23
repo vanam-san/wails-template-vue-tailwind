@@ -14,6 +14,7 @@ RUN apt-get update \
 
 RUN go install github.com/wailsapp/wails/v3/cmd/wails3@v3.1.0
 
+# Match host IDs so the developer can write to bind mounts on Linux.
 ARG LOCAL_UID=1000
 ARG LOCAL_GID=1000
 RUN groupadd --gid "${LOCAL_GID}" developer \

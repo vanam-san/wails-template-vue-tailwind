@@ -21,6 +21,7 @@ import { Label } from '@/components/ui/label'
 import { useGreeting } from '@/composables/useGreeting'
 import { greet } from '@/services/greet'
 
+// Supply the Wails-backed call to the composable that owns form state.
 const { name, greeting, error, status, submit } = useGreeting(greet)
 const stack = ['Wails v3', 'Vue 3', 'TypeScript', 'Tailwind CSS']
 const statusLabels = {
@@ -69,6 +70,7 @@ const statusLabels = {
         </CardHeader>
 
         <CardContent>
+          <!-- Keep the webview on this page when the form is submitted. -->
           <form class="space-y-4" @submit.prevent="submit">
             <div class="space-y-2">
               <Label for="name">Your name</Label>

@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button'
 import DialogOverlay from './DialogOverlay.vue'
 
+// Root-level attributes belong on the content inside the portal.
 defineOptions({
   inheritAttrs: false,
 })
@@ -31,6 +32,7 @@ const props = withDefaults(
 )
 const emits = defineEmits<DialogContentEmits>()
 
+// Merge the caller's classes with the wrapper styles in the template.
 const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)

@@ -11,6 +11,7 @@ import {
 } from 'reka-ui'
 import { SelectScrollDownButton, SelectScrollUpButton } from '.'
 
+// Forward attributes to the interactive content inside the portal.
 defineOptions({
   inheritAttrs: false,
 })

@@ -28,6 +28,7 @@ func main() {
 		},
 	})
 
+	// "/" loads the Vue entry page through the Wails asset server.
 	app.Window.NewWithOptions(application.WebviewWindowOptions{
 		Title:     {{printf "%q" .ProductName}},
 		Width:     1120,

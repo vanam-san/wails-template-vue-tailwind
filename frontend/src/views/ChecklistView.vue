@@ -28,6 +28,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
+// Tasks are local to this view and reset when the webview reloads.
 const tasks = reactive([
   {
     id: 'check-brand',
@@ -55,6 +56,7 @@ const tasks = reactive([
   },
 ])
 
+// Derive all progress indicators from the same checkbox state.
 const completed = computed(() => tasks.filter((task) => task.done).length)
 const allDone = computed(() => completed.value === tasks.length)
 const percent = computed(() =>

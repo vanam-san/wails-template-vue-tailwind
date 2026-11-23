@@ -16,6 +16,7 @@ import HomeView from '@/views/HomeView.vue'
 
 const themeKey = 'wails-starter-theme'
 const savedTheme = localStorage.getItem(themeKey)
+// Use the system preference until the user explicitly selects a theme.
 const dark = ref(
   savedTheme === 'dark' ||
     (savedTheme !== 'light' &&
@@ -23,6 +24,7 @@ const dark = ref(
 )
 
 watchEffect(() => {
+  // Apply the palette to the whole document, including portaled UI and native controls.
   document.documentElement.classList.toggle('dark', dark.value)
   document.documentElement.style.colorScheme = dark.value ? 'dark' : 'light'
 })
@@ -34,6 +36,7 @@ function toggleTheme() {
 </script>
 
 <template>
+  <!-- Keep inactive panels mounted so switching tabs preserves form and checklist state. -->
   <Tabs
     class="min-h-dvh gap-0 bg-background text-foreground"
     default-value="starter"

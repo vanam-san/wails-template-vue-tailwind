@@ -14,6 +14,7 @@ services:
     ports:
       - '127.0.0.1:${DESKTOP_PORT:-6080}:6080'
     volumes:
+      # Share app sources while keeping Linux dependencies and caches in Docker.
       - .:/workspace
       - node_modules:/workspace/frontend/node_modules
       - bun_cache:/home/developer/.cache/bun

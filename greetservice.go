@@ -11,6 +11,7 @@ type GreetService struct{}
 
 // Greet validates a name and returns a greeting through the Wails service bridge.
 func (s *GreetService) Greet(name string) (string, error) {
+	// Enforce the same whitespace rule for calls from any client.
 	name = strings.TrimSpace(name)
 	if name == "" {
 		return "", errors.New("please enter a name")

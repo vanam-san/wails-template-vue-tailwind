@@ -37,6 +37,7 @@ const deliveryOptions = [
   { value: 'weekly', label: 'Weekly digest' },
 ]
 
+// These values drive the preview in memory. Confirm only updates the status message.
 const delivery = ref('daily')
 const notifications = ref(true)
 const includeSummary = ref(false)
@@ -136,6 +137,7 @@ function reset() {
           <div
             class="flex flex-wrap items-center gap-2 border-t border-border pt-4"
           >
+            <!-- as-child lets the existing button handle dialog trigger behavior. -->
             <Dialog>
               <DialogTrigger as-child>
                 <Button type="button">Review preferences</Button>
