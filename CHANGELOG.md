@@ -4,7 +4,7 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) an
 
 ## [Unreleased]
 
-## [1.1.1] - 2026-11-23
+## [1.2.0] - 2026-11-23
 
 ### Added
 
@@ -35,7 +35,7 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) an
 
 - Prepare Git archives and pass app paths using native paths on Windows CI.
 
-[Unreleased]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.1.1...master
-[1.1.1]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.1.0...v1.1.1
+[Unreleased]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.2.0...master
+[1.2.0]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/vanam-san/wails-template-vue-tailwind/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/vanam-san/wails-template-vue-tailwind/releases/tag/v1.0.0
