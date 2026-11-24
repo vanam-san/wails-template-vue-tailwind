@@ -1,0 +1,44 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["before 6am on Monday"],
+  "semanticCommits": "enabled",
+  "automerge": false,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on Monday"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/ci\\.yml$/", "/^docker/Dockerfile$/", "/^template\\.yaml$/"],
+      "matchStrings": [
+        "WAILS_VERSION: (?<currentValue>v\\d+\\.\\d+\\.\\d+)",
+        "wailsapp/wails/v3/cmd/wails3@(?<currentValue>v\\d+\\.\\d+\\.\\d+)",
+        "raw\\.githubusercontent\\.com/wailsapp/wails/(?<currentValue>v\\d+\\.\\d+\\.\\d+)/"
+      ],
+      "depNameTemplate": "wailsapp/wails",
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/ci\\.yml$/"],
+      "matchStrings": [
+        "golang\\.org/x/vuln/cmd/govulncheck@(?<currentValue>v\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "golang.org/x/vuln",
+      "datasourceTemplate": "go"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["wailsapp/wails", "@wailsio/runtime"],
+      "allowedVersions": "/^v?3\\./",
+      "groupName": "Wails v3"
+    },
+    {
+      "matchPackageNames": ["oven/bun", "oven-sh/bun"],
+      "groupName": "Bun toolchain"
+    }
+  ]
+}

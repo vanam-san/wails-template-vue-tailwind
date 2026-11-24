@@ -4,6 +4,8 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: '23 4 * * 1'
 
 permissions:
   contents: read
@@ -12,6 +14,20 @@ env:
   WAILS_VERSION: v3.1.0
 
 jobs:
+  commitlint:
+    name: Lint pull request commit messages
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: wagoid/commitlint-github-action@v6
+
   native:
     name: Native checks on ${{ matrix.os }}
     strategy:
@@ -24,6 +40,8 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: actions/setup-go@v7
         with:
           go-version: '1.26.11'
@@ -72,6 +90,7 @@ jobs:
           }
           "APP_DIR=$appDir" >> $env:GITHUB_ENV
       - name: Frontend checks
+        id: frontend
         working-directory: ${{ env.APP_DIR }}
         run: |
           wails3 generate bindings -ts
@@ -84,12 +103,67 @@ jobs:
           bun run test
           bun run build
       - name: Go checks and native build
+        id: native-build
         working-directory: ${{ env.APP_DIR }}
         run: |
           test -z "$(gofmt -l ./*.go)"
           go test ./...
           go vet ./...
           wails3 build
+      - name: Generate dependency SBOM
+        if: runner.os == 'Linux'
+        uses: anchore/sbom-action@v0
+        env:
+          SYFT_GOLANG_SEARCH_LOCAL_MOD_CACHE_LICENSES: 'true'
+          SYFT_JAVASCRIPT_INCLUDE_DEV_DEPENDENCIES: 'true'
+        with:
+          path: ${{ env.APP_DIR }}
+          format: cyclonedx-json
+          output-file: ${{ runner.temp }}/starter.cdx.json
+          upload-release-assets: false
+          upload-artifact: false
+      - name: Check dependency license metadata
+        if: runner.os == 'Linux'
+        run: |
+          sbom="$RUNNER_TEMP/starter.cdx.json"
+          # An incomplete scan must not look like an empty license inventory.
+          jq -e '
+            [.components[] | .purl // ""] |
+            any(startswith("pkg:golang/")) and any(startswith("pkg:npm/"))
+          ' "$sbom" >/dev/null
+          jq -r '
+            [.components[] |
+              select((.purl // "") | startswith("pkg:golang/") or startswith("pkg:npm/"))
+            ] | group_by(.purl) | map([
+              .[0].purl,
+              ([.[].licenses[]? | .expression // .license.id // .license.name // empty]
+                | unique | if length == 0 then "UNKNOWN" else join("; ") end)
+            ]) | sort_by(.[1] != "UNKNOWN", .[0]) |
+            (["Package", "Detected licenses"], .[]) | @tsv
+          ' "$sbom" > "$RUNNER_TEMP/dependency-licenses.tsv"
+          unknown=$(awk -F '\t' '$2 == "UNKNOWN" { count++ } END { print count+0 }' "$RUNNER_TEMP/dependency-licenses.tsv")
+          echo "Dependency licenses: $unknown package entries with unknown metadata. See the dependency-inventory artifact." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        if: runner.os == 'Linux'
+        with:
+          name: dependency-inventory
+          path: |
+            ${{ runner.temp }}/starter.cdx.json
+            ${{ runner.temp }}/dependency-licenses.tsv
+          if-no-files-found: error
+      - name: Audit frontend dependencies
+        if: ${{ !cancelled() && runner.os == 'Linux' && steps.frontend.outcome == 'success' }}
+        working-directory: ${{ env.APP_DIR }}/frontend
+        run: bun audit
+      - name: Check Go vulnerabilities
+        if: ${{ !cancelled() && steps.native-build.outcome == 'success' }}
+        working-directory: ${{ env.APP_DIR }}
+        shell: pwsh
+        run: |
+          $env:GOBIN = Join-Path $env:RUNNER_TEMP 'dependency-tools'
+          go install golang.org/x/vuln/cmd/govulncheck@v1.10.0
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & (Join-Path $env:GOBIN 'govulncheck') ./...
       - name: Create macOS disk image
         if: runner.os == 'macOS'
         working-directory: ${{ env.APP_DIR }}
@@ -106,6 +180,7 @@ jobs:
 
   docker-installers:
     name: Windows and Debian installers in Docker
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -166,7 +241,7 @@ jobs:
         run: |
           tag="$GITHUB_REF_NAME"
           shopt -s failglob
-          assets=(installers/windows-nsis/*-installer.exe installers/debian-deb/*.deb installers/macos-dmg/*.dmg)
+          assets=(installers/windows-nsis/*-installer.exe installers/debian-deb/*.deb installers/macos-dmg/*.dmg installers/dependency-inventory/starter.cdx.json)
 
           if is_draft=$(gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null); then
             if [[ "$is_draft" != true ]]; then

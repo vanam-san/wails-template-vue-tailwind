@@ -1,0 +1,66 @@
+name: Update code owners
+
+on:
+  pull_request_target:
+    branches: [master]
+    types: [closed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-codeowners
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: >-
+      github.repository == 'vanam-san/wails-template-vue-tailwind' &&
+      (github.event.pull_request.merged == true ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master'))
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # This workflow has write permissions. Only check out the trusted base branch.
+          ref: master
+          persist-credentials: false
+      - name: Refresh contributor owners
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: |
+          $authors = gh api --paginate "repos/$env:GITHUB_REPOSITORY/pulls?state=closed&base=master&per_page=100" --jq '.[] | select(.merged_at != null and .user.type == "User") | .user.login'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $collaborators = gh api --paginate "repos/$env:GITHUB_REPOSITORY/collaborators?affiliation=direct&per_page=100" --jq '.[] | select(.type == "User" and .permissions.push == true) | .login'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          $owner = $env:REPOSITORY_OWNER.ToLowerInvariant()
+          $contributors = @($collaborators | Where-Object {
+            $_ -match '^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}$' -and $_ -ne $owner -and $_ -in $authors
+          } | ForEach-Object { $_.ToLowerInvariant() } | Sort-Object -Unique)
+          $owners = @("@$owner") + @($contributors | ForEach-Object { "@$_" })
+
+          $path = '.github/CODEOWNERS'
+          $lines = Get-Content -LiteralPath $path
+          $defaultRule = '^\*\s+'
+          if (@($lines -match $defaultRule).Count -ne 1) {
+            throw 'Expected exactly one default ownership rule.'
+          }
+          $updated = $lines -replace "$defaultRule.*", ('* ' + ($owners -join ' '))
+          Set-Content -LiteralPath $path -Value $updated
+      - name: Open or update the CODEOWNERS pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          base: master
+          branch: automation/update-codeowners
+          delete-branch: true
+          add-paths: .github/CODEOWNERS
+          commit-message: 'chore: update contributor code owners'
+          title: 'chore: update contributor code owners'
+          body: Refresh the default CODEOWNERS rule from merged pull request authors who currently have repository write access.

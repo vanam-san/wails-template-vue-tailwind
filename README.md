@@ -37,6 +37,7 @@ wails3 dev
 Replace `example.org/wails/starter` with your own Go module path. Run `wails3 build` from the generated app to build the executable in `bin/`.
 
 - [Development](docs/DEVELOPMENT.md) covers Docker, local template changes, and checks.
+- [Compatibility and dependency maintenance](docs/COMPATIBILITY.md) lists tested toolchains, platform requirements, and dependency checks.
 - [Build and release](docs/BUILD_AND_RELEASE.md) covers packaging and publishing.
 - [Architecture](docs/ARCHITECTURE.md) maps the source files and traces a greeting from Vue to Go.
 - [Troubleshooting](docs/TROUBLESHOOTING.md) covers common setup and integration problems.

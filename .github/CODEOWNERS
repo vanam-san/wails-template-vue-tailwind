@@ -1,0 +1,5 @@
+# The update workflow maintains the default rule from merged PR authors with write access.
+* @vanam-san
+
+# The repository owner reviews automation and ownership changes.
+/.github/ @vanam-san
