@@ -117,6 +117,8 @@ jobs:
           SYFT_GOLANG_SEARCH_LOCAL_MOD_CACHE_LICENSES: 'true'
           SYFT_JAVASCRIPT_INCLUDE_DEV_DEPENDENCIES: 'true'
         with:
+          # The action's bundled Syft version predates Bun lockfile support.
+          syft-version: v1.57.2
           path: ${{ env.APP_DIR }}
           format: cyclonedx-json
           output-file: ${{ runner.temp }}/starter.cdx.json
@@ -127,10 +129,14 @@ jobs:
         run: |
           sbom="$RUNNER_TEMP/starter.cdx.json"
           # An incomplete scan must not look like an empty license inventory.
-          jq -e '
+          if ! jq -e '
             [.components[] | .purl // ""] |
             any(startswith("pkg:golang/")) and any(startswith("pkg:npm/"))
-          ' "$sbom" >/dev/null
+          ' "$sbom" >/dev/null; then
+            echo "::error::The SBOM is missing Go or npm dependency entries."
+            jq -r '[.components[]? | (.purl // "" | split("/")[0])] | group_by(.) | .[] | [(.[0] | if . == "" then "no package URL" else . end), length] | @tsv' "$sbom"
+            exit 1
+          fi
           jq -r '
             [.components[] |
               select((.purl // "") | startswith("pkg:golang/") or startswith("pkg:npm/"))

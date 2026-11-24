@@ -28,6 +28,13 @@
       ],
       "depNameTemplate": "golang.org/x/vuln",
       "datasourceTemplate": "go"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/ci\\.yml$/"],
+      "matchStrings": ["syft-version: (?<currentValue>v\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "anchore/syft",
+      "datasourceTemplate": "github-releases"
     }
   ],
   "packageRules": [

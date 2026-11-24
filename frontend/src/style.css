@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'shadcn-vue/tailwind.css';
+@import './vendor/shadcn-vue.css';
 
 /* App.vue applies .dark to the document root, including for portaled menus. */
 @custom-variant dark (&:is(.dark *));

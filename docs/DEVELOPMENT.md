@@ -135,4 +135,4 @@ To add a shadcn-vue component, run this command from `frontend/`:
 bunx shadcn-vue@2.9.0 add dialog
 ```
 
-The container equivalent is `docker compose run --rm --workdir /workspace/frontend dev bunx shadcn-vue@2.9.0 add dialog`. Review the component source, dependency changes, and lockfile before committing. If the CLI adds a hosted font import, remove it to keep the starter usable offline.
+The container equivalent is `docker compose run --rm --workdir /workspace/frontend dev bunx shadcn-vue@2.9.0 add dialog`. The app builds with a local copy of the shadcn-vue Tailwind stylesheet, so the CLI is only needed when generating components. Keep the local stylesheet import if the CLI rewrites it. Review the component source, dependency changes, and lockfile before committing. If the CLI adds a hosted font import, remove it to keep the starter usable offline.

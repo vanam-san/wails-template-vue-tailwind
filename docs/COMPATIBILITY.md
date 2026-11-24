@@ -22,7 +22,7 @@ The CI matrix exercises template generation, frontend checks, Go tests, and nati
 
 ## Dependency updates
 
-Install the Renovate GitHub App for this repository to enable update pull requests. The repository configuration schedules updates and lockfile maintenance weekly. It covers Bun dependencies, GitHub Actions, Docker base images, and explicit Wails and `govulncheck` pins. Updates require review before merge. [Renovate configuration](../.github/renovate.json)
+Install the Renovate GitHub App for this repository to enable update pull requests. The repository configuration schedules updates and lockfile maintenance weekly. It covers Bun dependencies, GitHub Actions, Docker base images, and explicit Wails, `govulncheck`, and Syft pins. Updates require review before merge. [Renovate configuration](../.github/renovate.json)
 
 Review the Wails CLI, Docker CLI, schema URL, and frontend runtime together when upgrading Wails. The template substitutes the generator version into `go.mod.tmpl`. Regenerate a sample app and review `go.sum.tmpl` when updating Wails. Update this matrix and any affected setup commands when the tested toolchain changes.
 
