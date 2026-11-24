@@ -10,9 +10,9 @@ The first template release is `v1.0.0`. Choose the next version by taking the la
 | Backward-compatible features, such as `feat:` | Minor `+0.1.0` | `v1.1.0` |
 | Breaking changes or an incompatible overhaul, marked with `!` or `BREAKING CHANGE` | Major, reset minor and patch | `v2.0.0` |
 
-1. Update `template.yaml` and move the relevant changelog entries from **Unreleased** into a dated version section. Commit those changes with a Conventional Commit such as `chore(release): prepare v1.0.1`.
+1. Update `template.yaml`, the README's installer link and template tag, and the compatibility guide's release version. Move the relevant changelog entries from **Unreleased** into a dated version section. Commit those changes with a Conventional Commit such as `chore(release): prepare v1.0.1`.
 2. Verify the checks on `master`. Create an annotated `vMAJOR.MINOR.PATCH` tag for the verified commit and push the tag to `origin`.
-3. Wait for **Template checks and installers** to attach the starter app installers to a draft GitHub release for the tag. Review the assets, add the matching changelog section as release notes, and publish the draft. The tag and source archives version the template. Installer versions are set separately when generating or configuring an application.
+3. Wait for **Template checks and installers** to attach the starter app installers and CycloneDX SBOM to a draft GitHub release for the tag. Review the assets, add the matching changelog section as release notes, and publish the draft. The tag and source archives version the template. Installer versions are set separately when generating or configuring an application.
 
 [Semantic Versioning](https://semver.org/) · [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 

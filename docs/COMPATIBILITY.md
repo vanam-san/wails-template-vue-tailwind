@@ -1,5 +1,7 @@
 # Compatibility and dependency maintenance
 
+This matrix applies to template release `v1.2.0`.
+
 ## Toolchain
 
 | Component | Template requirement | CI baseline |

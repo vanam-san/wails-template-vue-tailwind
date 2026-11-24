@@ -4,12 +4,21 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) an
 
 ## [Unreleased]
 
-## [1.2.0] - 2026-11-23
+## [1.2.0] - 2026-11-24
 
 ### Added
 
 - Explain the Wails service bridge, Vue state, UI wrappers, and build infrastructure with source comments.
 - Add a source map and a walkthrough of the greeting request to the architecture guide.
+- Document the tested toolchains, platform prerequisites, and installer targets in a compatibility matrix.
+- Configure weekly Renovate updates for dependencies and the Bun lockfile.
+- Run Go and frontend vulnerability checks in CI. Publish a CycloneDX SBOM and dependency license inventory, and attach the SBOM to release drafts.
+- Check pull request commit messages with Commitlint and propose CODEOWNERS updates for contributors with repository write access.
+
+### Fixed
+
+- Include Go and Bun dependencies in the Ubuntu SBOM by using a Syft version with Bun lockfile support.
+- Keep the shadcn-vue stylesheet in the starter while running the CLI on demand. This removes the vulnerable CLI dependencies from the app's lockfile.
 
 ## [1.1.0] - 2026-11-22
 

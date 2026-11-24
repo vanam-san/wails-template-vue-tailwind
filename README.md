@@ -4,7 +4,7 @@ A Wails v3 desktop app template with a Go backend, Vue 3, TypeScript, Tailwind C
 
 ## Install the sample app
 
-Open the [latest release](https://github.com/vanam-san/wails-template-vue-tailwind/releases/latest) and expand **Assets**. Download the installer for your platform. The sample app includes the frontend and runs without a developer toolchain.
+Open the [v1.2.0 release](https://github.com/vanam-san/wails-template-vue-tailwind/releases/tag/v1.2.0) and expand **Assets**. Download the installer for your platform. The sample app includes the frontend and runs without a developer toolchain.
 
 | Platform | Install |
 | --- | --- |
@@ -29,7 +29,7 @@ Install Go 1.26 or newer, Bun 1.4.5, Node.js 24 or 26, and the [Wails platform d
 ```sh
 go install github.com/wailsapp/wails/v3/cmd/wails3@v3.1.0
 wails3 doctor
-wails3 init -n WailsVueStarter -t https://github.com/vanam-san/wails-template-vue-tailwind@master -mod example.org/wails/starter -productname "Wails Vue Starter"
+wails3 init -n WailsVueStarter -t https://github.com/vanam-san/wails-template-vue-tailwind@v1.2.0 -mod example.org/wails/starter -productname "Wails Vue Starter"
 cd WailsVueStarter
 wails3 dev
 ```
